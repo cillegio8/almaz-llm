@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Azərbaycan Dilli Chatbot',
+  title: 'ALMAZ',
   description: 'Yalnız Azərbaycan dilində danışan AI köməkçisi',
 }
 

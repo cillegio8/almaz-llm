@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { sendMessage } from '@/lib/api'
 import ChatWindow from '@/components/ChatWindow'
-import UsageCounter from '@/components/UsageCounter'
 import LanguageNotice from '@/components/LanguageNotice'
 import type { User } from '@supabase/supabase-js'
 
@@ -21,7 +20,6 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
-  const [usage, setUsage] = useState({ used: 0, max: 16 })
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -33,19 +31,6 @@ export default function ChatPage() {
       }
       setUser(session.user)
 
-      // Fetch current usage from Supabase
-      const { data } = await supabase
-        .from('user_usage')
-        .select('questions_used, max_questions')
-        .eq('id', session.user.id)
-        .single()
-
-      if (data) {
-        setUsage({ used: data.questions_used, max: data.max_questions })
-        if (data.questions_used >= data.max_questions) {
-          router.replace('/limit-reached')
-        }
-      }
       setLoading(false)
     })
   }, [router])
@@ -79,21 +64,11 @@ export default function ChatPage() {
         session.access_token
       )
 
-      if (result.error === 'limit_reached') {
-        router.replace('/limit-reached')
-        return
-      }
-
       const assistantMessage: Message = {
         role: 'assistant',
         content: result.response,
       }
       setMessages((prev) => [...prev, assistantMessage])
-      setUsage(result.usage)
-
-      if (result.usage.used >= result.usage.max) {
-        setTimeout(() => router.replace('/limit-reached'), 1500)
-      }
     } catch (err) {
       console.error(err)
       setMessages((prev) => [
@@ -130,15 +105,14 @@ export default function ChatPage() {
       <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 8l2 1.5L12 22l8-12.5L22 8 12 2zm0 2.5l6.5 4-1.2.9L12 5.8l-5.3 3.6-1.2-.9L12 4.5zM6.2 10.3L12 8.2l5.8 2.1L12 19.5 6.2 10.3z"/>
             </svg>
           </div>
-          <span className="font-semibold text-gray-900">AZ Köməkçi</span>
+          <span className="font-semibold text-gray-900">ALMAZ</span>
         </div>
 
         <div className="flex items-center gap-4">
-          <UsageCounter used={usage.used} max={usage.max} />
           <div className="flex items-center gap-2">
             {user?.user_metadata?.avatar_url && (
               <img

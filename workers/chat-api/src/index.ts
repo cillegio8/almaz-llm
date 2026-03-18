@@ -12,7 +12,8 @@ export interface Env {
 
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
-  'azeri-chatbot-api.soprano-2c5.workers.dev',
+  'https://almaz-llm.pages.dev',
+  'https://almaz.adventa.az',
 ]
 
 function corsHeaders(origin: string | null): HeadersInit {
@@ -83,22 +84,11 @@ export default {
       }
 
       // 4. Check & increment usage
-      const usageResult = await checkAndIncrementUsage(
+      await checkAndIncrementUsage(
         payload.sub,
         env.SUPABASE_URL,
         env.SUPABASE_SERVICE_ROLE_KEY
       )
-
-      if (!usageResult.allowed) {
-        return jsonResponse(
-          {
-            error: 'limit_reached',
-            message: 'Pulsuz suallarınız bitdi',
-          },
-          429,
-          origin
-        )
-      }
 
       // 5. Call LLM
       let response: string
@@ -115,17 +105,7 @@ export default {
       }
 
       // 6. Return response
-      return jsonResponse(
-        {
-          response,
-          usage: {
-            used: usageResult.used,
-            max: usageResult.max,
-          },
-        },
-        200,
-        origin
-      )
+      return jsonResponse({ response }, 200, origin)
     }
 
     return jsonResponse({ error: 'not_found' }, 404, origin)

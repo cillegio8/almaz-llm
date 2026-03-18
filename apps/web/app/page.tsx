@@ -34,18 +34,8 @@ export default function LandingPage() {
         {/* Logo / Icon */}
         <div className="flex justify-center">
           <div className="w-20 h-20 bg-accent-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-              />
+            <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 8l2 1.5L12 22l8-12.5L22 8 12 2zm0 2.5l6.5 4-1.2.9L12 5.8l-5.3 3.6-1.2-.9L12 4.5zM6.2 10.3L12 8.2l5.8 2.1L12 19.5 6.2 10.3z"/>
             </svg>
           </div>
         </div>
@@ -53,8 +43,7 @@ export default function LandingPage() {
         {/* Title */}
         <div className="space-y-3">
           <h1 className="text-4xl font-bold text-gray-900">
-            Azərbaycan Dilli
-            <span className="text-accent-600"> Köməkçi</span>
+            <span className="text-accent-600">ALMAZ</span>
           </h1>
           <p className="text-lg text-gray-600">
             Süni intellekt əsaslı köməkçiniz — yalnız Azərbaycan dilində
@@ -66,7 +55,6 @@ export default function LandingPage() {
           {[
             { icon: '🇦🇿', text: 'Yalnız Azərbaycan dilində cavab verir' },
             { icon: '⚡', text: 'Sürətli və dəqiq cavablar' },
-            { icon: '🎁', text: '16 pulsuz sual hüququ' },
             { icon: '🔒', text: 'E-poçt ilə sürətli və təhlükəsiz giriş' },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3">

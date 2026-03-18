@@ -6,11 +6,7 @@ export async function sendMessage(
   message: string,
   history: Message[],
   accessToken: string
-): Promise<{
-  response: string
-  usage: { used: number; max: number }
-  error?: string
-}> {
+): Promise<{ response: string }> {
   const res = await fetch(`${WORKER_URL}/chat`, {
     method: 'POST',
     headers: {
@@ -19,14 +15,6 @@ export async function sendMessage(
     },
     body: JSON.stringify({ message, history }),
   })
-
-  if (res.status === 429) {
-    return {
-      response: '',
-      usage: { used: 16, max: 16 },
-      error: 'limit_reached',
-    }
-  }
 
   if (!res.ok) {
     throw new Error(`API error: ${res.status}`)
