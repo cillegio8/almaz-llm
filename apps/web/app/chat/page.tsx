@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase'
 import { sendMessage } from '@/lib/api'
 import ChatWindow from '@/components/ChatWindow'
 import LanguageNotice from '@/components/LanguageNotice'
+import UsageCounter from '@/components/UsageCounter'
 import type { User } from '@supabase/supabase-js'
 
 export interface Message {
@@ -20,6 +21,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [usage, setUsage] = useState({ used: 0, max: 20 })
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -64,11 +66,21 @@ export default function ChatPage() {
         session.access_token
       )
 
+      if (result.error === 'limit_reached') {
+        router.replace('/limit-reached')
+        return
+      }
+
       const assistantMessage: Message = {
         role: 'assistant',
         content: result.response,
       }
       setMessages((prev) => [...prev, assistantMessage])
+      setUsage(result.usage)
+
+      if (result.usage.used >= result.usage.max) {
+        setTimeout(() => router.replace('/limit-reached'), 1500)
+      }
     } catch (err) {
       console.error(err)
       setMessages((prev) => [
@@ -113,6 +125,7 @@ export default function ChatPage() {
         </div>
 
         <div className="flex items-center gap-4">
+          <UsageCounter used={usage.used} max={usage.max} />
           <div className="flex items-center gap-2">
             {user?.user_metadata?.avatar_url && (
               <img

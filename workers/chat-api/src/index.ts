@@ -84,11 +84,15 @@ export default {
       }
 
       // 4. Check & increment usage
-      await checkAndIncrementUsage(
+      const usageResult = await checkAndIncrementUsage(
         payload.sub,
         env.SUPABASE_URL,
         env.SUPABASE_SERVICE_ROLE_KEY
       )
+
+      if (!usageResult.allowed) {
+        return jsonResponse({ error: 'limit_reached', message: 'Suallarınız bitdi. 8 saat sonra yenidən cəhd edin.' }, 429, origin)
+      }
 
       // 5. Call LLM
       let response: string
@@ -105,7 +109,7 @@ export default {
       }
 
       // 6. Return response
-      return jsonResponse({ response }, 200, origin)
+      return jsonResponse({ response, usage: { used: usageResult.used, max: usageResult.max } }, 200, origin)
     }
 
     return jsonResponse({ error: 'not_found' }, 404, origin)

@@ -55,6 +55,7 @@ export default function LandingPage() {
           {[
             { icon: '🇦🇿', text: 'Yalnız Azərbaycan dilində cavab verir' },
             { icon: '⚡', text: 'Sürətli və dəqiq cavablar' },
+            { icon: '🎁', text: 'Hər 8 saatda 20 pulsuz sual' },
             { icon: '🔒', text: 'E-poçt ilə sürətli və təhlükəsiz giriş' },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3">
