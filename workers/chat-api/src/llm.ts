@@ -37,7 +37,7 @@ export async function callOpenRouter(
       'X-Title': 'Azeri Chatbot Demo',
     },
     body: JSON.stringify({
-      model: 'qwen/qwen-2.5-72b-instruct',
+      model: 'qwen/qwen3.5-397b-a17b',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...sanitizedHistory,

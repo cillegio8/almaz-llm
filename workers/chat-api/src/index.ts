@@ -12,7 +12,7 @@ export interface Env {
 
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
-  'https://azeri-chatbot.pages.dev',
+  'azeri-chatbot-api.soprano-2c5.workers.dev',
 ]
 
 function corsHeaders(origin: string | null): HeadersInit {
@@ -65,7 +65,7 @@ export default {
       const token = authHeader.slice(7)
 
       // 2. Verify JWT
-      const payload = await verifySupabaseJWT(token, env.SUPABASE_JWT_SECRET)
+      const payload = await verifySupabaseJWT(token, env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY)
       if (!payload) {
         return jsonResponse({ error: 'invalid_token' }, 401, origin)
       }
