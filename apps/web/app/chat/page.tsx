@@ -28,7 +28,12 @@ export default function ChatPage() {
     const supabase = createClient()
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (error || !session) {
-        if (error) console.error('Chat page session check error:', error)
+        if (error) {
+          console.error('Chat page session check error:', error)
+          if (error.message.includes('Refresh Token Not Found')) {
+            supabase.auth.signOut().catch(() => {})
+          }
+        }
         router.replace('/')
         return
       }
