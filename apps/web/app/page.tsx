@@ -390,7 +390,7 @@ export default function LandingPage() {
       <section className="auth-section" id="auth-section">
         <div className="auth-container" style={{ fontFamily: 'var(--font-sans)' }}>
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-light text-pearl mb-4">ALMAZ-a qoşulun</h2>
+                <h2 className="text-3xl font-light text-pearl mb-4" style={{ fontFamily: 'var(--font-display)' }}>ALMAZ-a qoşulun</h2>
                 <p className="text-silver">Süni intellektin gücünü Azərbaycan dilində kəşf edin.</p>
             </div>
             <AuthButton />

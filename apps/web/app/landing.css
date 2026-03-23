@@ -13,7 +13,7 @@ html {
 }
 
 body {
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     background: var(--midnight);
     color: var(--pearl);
     line-height: 1.6;
@@ -50,7 +50,7 @@ nav.landing-nav {
 }
 
 .logo {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 1.8rem;
     font-weight: 600;
     letter-spacing: 0.15em;
@@ -102,7 +102,7 @@ nav.landing-nav {
     border: 1px solid var(--gold);
     color: var(--gold);
     padding: 0.75rem 2rem;
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -244,7 +244,7 @@ nav.landing-nav {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     color: var(--midnight);
     padding: 1.1rem 3rem;
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -282,7 +282,7 @@ nav.landing-nav {
     background: transparent;
     color: var(--pearl);
     padding: 1.1rem 3rem;
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -379,7 +379,7 @@ nav.landing-nav {
 }
 
 .stat-number {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 3.5rem;
     font-weight: 300;
     color: var(--gold);
@@ -432,7 +432,7 @@ nav.landing-nav {
 
 .about-diamond::before {
     content: 'الماز';
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 4rem;
     color: var(--gold);
     transform: rotate(-45deg);
@@ -628,7 +628,7 @@ nav.landing-nav {
 .data-card .data-stat {
     font-size: 2rem;
     color: var(--gold);
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-weight: 300;
     margin-bottom: 0.5rem;
 }
@@ -694,7 +694,7 @@ nav.landing-nav {
 }
 
 .benchmark-value {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 1.5rem;
     color: var(--gold);
 }
@@ -862,7 +862,7 @@ footer {
 }
 
 .footer-logo {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 1.5rem;
     color: var(--gold);
     letter-spacing: 0.1em;
