@@ -13,12 +13,20 @@ export default function LandingPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (error) {
+        console.error('Session check error:', error)
+        setChecking(false)
+        return
+      }
       if (session) {
         router.replace('/chat')
       } else {
         setChecking(false)
       }
+    }).catch((err) => {
+      console.error('Unhandled session error:', err)
+      setChecking(false)
     })
   }, [router])
 

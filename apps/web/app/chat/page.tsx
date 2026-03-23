@@ -26,14 +26,18 @@ export default function ChatPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) {
+    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      if (error || !session) {
+        if (error) console.error('Chat page session check error:', error)
         router.replace('/')
         return
       }
       setUser(session.user)
 
       setLoading(false)
+    }).catch((err) => {
+      console.error('Chat page unhandled session error:', err)
+      router.replace('/')
     })
   }, [router])
 
@@ -54,8 +58,9 @@ export default function ChatPage() {
 
     try {
       const supabase = createClient()
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error || !session) {
+        if (error) console.error('Send message session error:', error)
         router.replace('/')
         return
       }
