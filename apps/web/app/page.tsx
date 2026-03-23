@@ -2,9 +2,21 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import { createClient } from '@/lib/supabase'
 import AuthButton from '@/components/AuthButton'
 import './landing.css'
+
+const cormorant = Cormorant_Garamond({ 
+  subsets: ['latin'], 
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-cormorant'
+})
+const dmSans = DM_Sans({ 
+  subsets: ['latin'], 
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-dm-sans'
+})
 
 export default function LandingPage() {
   const router = useRouter()
@@ -95,7 +107,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="landing-body">
+    <div className={`landing-body ${cormorant.variable} ${dmSans.variable}`}>
       {/* Navigation */}
       <nav className="landing-nav">
         <div className="logo cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

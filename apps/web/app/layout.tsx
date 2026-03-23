@@ -1,18 +1,8 @@
 import type { Metadata } from 'next'
-import { Inter, Cormorant_Garamond, DM_Sans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const cormorant = Cormorant_Garamond({ 
-  subsets: ['latin'], 
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-cormorant'
-})
-const dmSans = DM_Sans({ 
-  subsets: ['latin'], 
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-dm-sans'
-})
 
 export const metadata: Metadata = {
   title: 'ALMAZ — Native Azerbaijani AI',
@@ -25,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="az" className={`${inter.variable} ${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="az" className={`${inter.variable}`}>
       <body className="min-h-screen">
         {children}
       </body>
