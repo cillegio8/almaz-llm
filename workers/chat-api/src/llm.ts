@@ -15,12 +15,17 @@ export interface ChatMessage {
   content: string
 }
 
+export interface LLMResult {
+  content: string
+  tokensUsed: number
+}
+
 export async function callOpenRouter(
   message: string,
   history: ChatMessage[],
   apiKey: string,
   refererUrl: string
-): Promise<string> {
+): Promise<LLMResult> {
   // Sanitize inputs
   const sanitizedMessage = message.trim().slice(0, 4000)
   const sanitizedHistory = history.slice(-10).map((msg) => ({
@@ -55,7 +60,11 @@ export async function callOpenRouter(
 
   const data = await res.json() as {
     choices: Array<{ message: { content: string } }>
+    usage?: { total_tokens?: number }
   }
 
-  return data.choices[0]?.message?.content ?? ''
+  return {
+    content: data.choices[0]?.message?.content ?? '',
+    tokensUsed: data.usage?.total_tokens ?? 0,
+  }
 }

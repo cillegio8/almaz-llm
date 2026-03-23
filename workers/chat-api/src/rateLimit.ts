@@ -4,6 +4,27 @@ const RESET_PERIOD_MS = 8 * 60 * 60 * 1000 // 8 hours
 interface UsageRecord {
   questions_used: number
   last_question_at: string | null
+  tokens_used: number
+}
+
+export async function addTokens(
+  userId: string,
+  supabaseUrl: string,
+  serviceRoleKey: string,
+  tokensToAdd: number
+): Promise<void> {
+  if (tokensToAdd <= 0) return
+  const headers = {
+    apikey: serviceRoleKey,
+    Authorization: `Bearer ${serviceRoleKey}`,
+    'Content-Type': 'application/json',
+  }
+  // Use Postgres RPC to atomically increment tokens_used
+  await fetch(`${supabaseUrl}/rest/v1/rpc/increment_tokens`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ user_id: userId, amount: tokensToAdd }),
+  })
 }
 
 export async function checkAndIncrementUsage(
@@ -19,7 +40,7 @@ export async function checkAndIncrementUsage(
 
   // Fetch current usage
   const fetchRes = await fetch(
-    `${supabaseUrl}/rest/v1/user_usage?id=eq.${userId}&select=questions_used,last_question_at`,
+    `${supabaseUrl}/rest/v1/user_usage?id=eq.${userId}&select=questions_used,last_question_at,tokens_used`,
     { headers }
   )
 
@@ -31,7 +52,6 @@ export async function checkAndIncrementUsage(
   }
 
   if (!record) {
-    // Create row and allow first question
     await fetch(`${supabaseUrl}/rest/v1/user_usage`, {
       method: 'POST',
       headers: { ...headers, Prefer: 'return=minimal' },
@@ -45,7 +65,6 @@ export async function checkAndIncrementUsage(
   const periodExpired = Date.now() - periodStart >= RESET_PERIOD_MS
 
   if (periodExpired) {
-    // Reset counter and start new period
     await fetch(`${supabaseUrl}/rest/v1/user_usage?id=eq.${userId}`, {
       method: 'PATCH',
       headers: { ...headers, Prefer: 'return=minimal' },

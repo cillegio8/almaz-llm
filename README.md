@@ -1,6 +1,6 @@
-# Azərbaycan Dilli Chatbot
+# ALMAZ — Azerbaijani AI Chatbot
 
-A full-stack Azerbaijani-language AI chatbot web application. Users authenticate via Google OAuth, receive 16 free questions, and interact with an LLM constrained to respond only in Azerbaijani.
+A full-stack Azerbaijani-language AI chatbot. Users register with email/password, receive 20 free questions per 8-hour window, and interact with an LLM constrained to respond only in Azerbaijani.
 
 ## Architecture
 
@@ -8,7 +8,7 @@ A full-stack Azerbaijani-language AI chatbot web application. Users authenticate
 ┌─────────────────────────────────────────────┐
 │  Next.js Frontend (Cloudflare Pages)        │
 │  apps/web/                                  │
-│  - Landing page with Google OAuth           │
+│  - Landing page with email/password auth    │
 │  - Chat interface with usage counter        │
 │  - Limit-reached page                       │
 └────────────────────┬────────────────────────┘
@@ -33,7 +33,7 @@ A full-stack Azerbaijani-language AI chatbot web application. Users authenticate
 ### Prerequisites
 
 - Node.js 18+
-- npm or pnpm
+- npm
 - A Supabase project
 - An OpenRouter API key
 - Wrangler CLI (`npm install -g wrangler`)
@@ -54,21 +54,13 @@ npm install
 
 #### Frontend (`apps/web/.env.local`)
 
-Copy the example file and fill in your values:
-
-```bash
-cp apps/web/.env.local.example apps/web/.env.local
-```
-
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 NEXT_PUBLIC_WORKER_URL=http://localhost:8787
 ```
 
-#### Worker secrets (for local dev, use a `.dev.vars` file)
-
-Create `workers/chat-api/.dev.vars`:
+#### Worker (`workers/chat-api/.dev.vars`)
 
 ```env
 OPENROUTER_API_KEY=sk-or-v1-...
@@ -77,7 +69,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 SUPABASE_JWT_SECRET=your-jwt-secret
 ```
 
-> Find your JWT secret in Supabase Dashboard > Settings > API > JWT Settings > JWT Secret
+> Find your JWT secret in Supabase Dashboard → Settings → API → JWT Settings → JWT Secret
 
 ### 3. Run Locally
 
@@ -100,11 +92,11 @@ Open http://localhost:3000
 ### Step 1: Create a Supabase Project
 
 1. Go to https://supabase.com and create a new project
-2. Note your **Project URL** and **anon key** from Settings > API
+2. Note your **Project URL** and **anon key** from Settings → API
 
 ### Step 2: Run the Database Migration
 
-In the Supabase Dashboard, open the **SQL Editor** and run the contents of:
+In the Supabase Dashboard, open the **SQL Editor** and run:
 
 ```
 supabase/migrations/001_create_usage_table.sql
@@ -112,21 +104,12 @@ supabase/migrations/001_create_usage_table.sql
 
 This creates the `user_usage` table with RLS policies and an auto-insert trigger for new users.
 
-### Step 3: Enable Google OAuth
+### Step 3: Configure Email Auth
 
-1. In Supabase Dashboard, go to **Authentication > Providers**
-2. Enable **Google**
-3. Create OAuth credentials at https://console.cloud.google.com:
-   - Create a new OAuth 2.0 Client ID (Web application)
-   - Add authorized redirect URI: `https://your-project.supabase.co/auth/v1/callback`
-4. Copy the **Client ID** and **Client Secret** into Supabase
-
-### Step 4: Configure Redirect URLs
-
-In Supabase Dashboard > Authentication > URL Configuration:
-
-- **Site URL**: `https://your-app.pages.dev` (or `http://localhost:3000` for local dev)
-- **Redirect URLs**: Add `https://your-app.pages.dev/auth/callback` and `http://localhost:3000/auth/callback`
+1. In Supabase Dashboard → Authentication → Providers → Email: ensure it is enabled
+2. Optionally disable **Confirm email** (Dashboard → Auth → Settings) if you want instant access without email verification
+3. In Supabase Dashboard → Authentication → URL Configuration:
+   - **Site URL**: `https://almaz-llm.pages.dev` (or `http://localhost:3000` for local dev)
 
 ---
 
@@ -149,62 +132,53 @@ cd workers/chat-api
 # Login to Cloudflare
 wrangler login
 
-# Set production secrets (run once each)
+# Set production secrets (run once each, paste value when prompted)
 wrangler secret put OPENROUTER_API_KEY
 wrangler secret put SUPABASE_URL
 wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 wrangler secret put SUPABASE_JWT_SECRET
 
 # Deploy
-npm run deploy
+wrangler deploy
 ```
 
-Note the Worker URL (e.g., `https://azeri-chatbot-api.your-subdomain.workers.dev`).
+Note the Worker URL (e.g. `https://azeri-chatbot-api.your-subdomain.workers.dev`).
 
-**Update CORS**: In `workers/chat-api/src/index.ts`, add your Cloudflare Pages URL to `ALLOWED_ORIGINS`.
+**CORS**: Allowed origins are configured in `workers/chat-api/src/index.ts`. Currently:
+- `http://localhost:3000`
+- `https://almaz-llm.pages.dev`
+- `https://almaz.adventa.az`
 
-### Deploy the Frontend to Cloudflare Pages
+Add any new domains there and redeploy.
 
-**Option A: Via Cloudflare Dashboard (recommended)**
+### Deploy the Frontend to Cloudflare Pages (GitHub integration)
 
 1. Push this repo to GitHub
-2. In Cloudflare Dashboard > Pages > Create a project
-3. Connect your GitHub repo
-4. Build settings:
-   - Framework: Next.js
-   - Build command: `cd apps/web && npm run pages:build`
-   - Build output: `apps/web/.vercel/output/static`
-5. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_WORKER_URL` (your deployed Worker URL)
+2. In Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git
+3. Select your repo and set:
+   - **Root directory**: `apps/web`
+   - **Build command**: `npx @cloudflare/next-on-pages`
+   - **Output directory**: `.vercel/output/static`
+4. Environment variables are managed via `apps/web/wrangler.toml` — update the `[vars]` section with your values before pushing:
 
-**Option B: Via CLI**
-
-```bash
-cd apps/web
-npm run pages:build
-npm run pages:deploy
+```toml
+[vars]
+NEXT_PUBLIC_SUPABASE_URL = "https://your-project.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
+NEXT_PUBLIC_WORKER_URL = "https://azeri-chatbot-api.your-subdomain.workers.dev"
 ```
 
-### Deploy the Frontend to Vercel (alternative)
-
-```bash
-cd apps/web
-npx vercel --prod
-```
-
-Set environment variables in the Vercel dashboard.
+Every push to `main` triggers an automatic redeploy.
 
 ---
 
 ## Customization
 
-### Change the Question Limit
+### Change the Question Limit or Reset Window
 
-- Default is **16 questions** per user
-- To change globally, update the `max_questions` default in the SQL migration
-- To change per-user, update the `max_questions` column for specific users in the `user_usage` table
+- Default is **20 questions** per **8-hour** rolling window
+- To change the limit: update `MAX_QUESTIONS` in `workers/chat-api/src/rateLimit.ts`
+- To change the reset window: update `RESET_WINDOW_MS` in the same file
 
 ### Change the LLM Model
 
@@ -218,11 +192,11 @@ See available models at https://openrouter.ai/models
 
 ### Update the System Prompt
 
-The system prompt enforcing Azerbaijani-only responses is in `workers/chat-api/src/llm.ts` in the `SYSTEM_PROMPT` constant.
+The Azerbaijani-only system prompt is in `workers/chat-api/src/llm.ts` in the `SYSTEM_PROMPT` constant.
 
 ### Update Contact Email
 
-The contact email on the limit-reached page is in `apps/web/app/limit-reached/page.tsx`. Search for `info@example.com` and replace it.
+On the limit-reached page (`apps/web/app/limit-reached/page.tsx`), search for `info@example.com` and replace it.
 
 ---
 
@@ -231,29 +205,30 @@ The contact email on the limit-reached page is in `apps/web/app/limit-reached/pa
 ```
 almaz-llm/
 ├── apps/
-│   └── web/                    # Next.js 14 frontend
+│   └── web/                    # Next.js frontend (Cloudflare Pages)
 │       ├── app/
 │       │   ├── page.tsx        # Landing / auth page
 │       │   ├── chat/page.tsx   # Main chat interface
 │       │   ├── limit-reached/  # Usage limit page
-│       │   └── auth/callback/  # OAuth callback route
+│       │   └── auth/callback/  # Auth callback route (edge runtime)
 │       ├── components/
 │       │   ├── ChatWindow.tsx
-│       │   ├── MessageBubble.tsx
-│       │   ├── AuthButton.tsx
+│       │   ├── MessageBubble.tsx  # Renders markdown in assistant replies
+│       │   ├── AuthButton.tsx     # Email/password sign-in + sign-up form
 │       │   ├── UsageCounter.tsx
 │       │   └── LanguageNotice.tsx
-│       └── lib/
-│           ├── supabase.ts     # Supabase browser client
-│           └── api.ts          # Worker API client
+│       ├── lib/
+│       │   ├── supabase.ts     # Supabase browser client
+│       │   └── api.ts          # Worker API client
+│       └── wrangler.toml       # Cloudflare Pages config + public env vars
 │
 ├── workers/
-│   └── chat-api/               # Cloudflare Worker (Edge)
+│   └── chat-api/               # Cloudflare Worker (Edge API)
 │       └── src/
 │           ├── index.ts        # Request router + CORS
-│           ├── auth.ts         # JWT verification (Web Crypto)
+│           ├── auth.ts         # JWT verification (Web Crypto API)
 │           ├── llm.ts          # OpenRouter API client
-│           └── rateLimit.ts    # Supabase usage tracking
+│           └── rateLimit.ts    # 20 questions / 8-hour reset logic
 │
 └── supabase/
     └── migrations/

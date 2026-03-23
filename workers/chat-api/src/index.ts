@@ -1,6 +1,6 @@
 import { verifySupabaseJWT } from './auth'
-import { checkAndIncrementUsage } from './rateLimit'
-import { callOpenRouter } from './llm'
+import { checkAndIncrementUsage, addTokens } from './rateLimit'
+import { callOpenRouter, LLMResult } from './llm'
 
 export interface Env {
   OPENROUTER_API_KEY: string
@@ -95,9 +95,9 @@ export default {
       }
 
       // 5. Call LLM
-      let response: string
+      let llmResult: LLMResult
       try {
-        response = await callOpenRouter(
+        llmResult = await callOpenRouter(
           body.message,
           (body.history ?? []) as Array<{ role: 'user' | 'assistant'; content: string }>,
           env.OPENROUTER_API_KEY,
@@ -108,8 +108,11 @@ export default {
         return jsonResponse({ error: 'llm_error' }, 500, origin)
       }
 
-      // 6. Return response
-      return jsonResponse({ response, usage: { used: usageResult.used, max: usageResult.max } }, 200, origin)
+      // 6. Store token usage (fire and forget)
+      addTokens(payload.sub, env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, llmResult.tokensUsed)
+
+      // 7. Return response
+      return jsonResponse({ response: llmResult.content, usage: { used: usageResult.used, max: usageResult.max } }, 200, origin)
     }
 
     return jsonResponse({ error: 'not_found' }, 404, origin)
