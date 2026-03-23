@@ -43,9 +43,9 @@ export default function AuthButton() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-left space-y-5">
+    <div className="bg-midnight-light rounded-2xl border border-midnight-lighter shadow-xl p-6 text-left space-y-5">
       {/* Mode tabs */}
-      <div className="flex rounded-xl bg-gray-100 p-1">
+      <div className="flex rounded-xl bg-midnight p-1">
         {(['signin', 'signup'] as Mode[]).map((m) => (
           <button
             key={m}
@@ -53,8 +53,8 @@ export default function AuthButton() {
             onClick={() => { setMode(m); setError(null); setSuccessMsg(null) }}
             className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
               mode === m
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-midnight-lighter text-pearl shadow-sm'
+                : 'text-silver hover:text-pearl'
             }`}
           >
             {m === 'signin' ? 'Daxil ol' : 'Qeydiyyat'}
@@ -64,7 +64,7 @@ export default function AuthButton() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label className="block text-sm font-medium text-silver mb-1.5">
             E-poçt
           </label>
           <input
@@ -73,12 +73,12 @@ export default function AuthButton() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.com"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm md:text-base text-gray-900 outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-2.5 bg-midnight rounded-xl border border-midnight-lighter text-sm md:text-base text-pearl outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all placeholder:text-gray-600"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label className="block text-sm font-medium text-silver mb-1.5">
             Şifrə
           </label>
           <input
@@ -88,18 +88,18 @@ export default function AuthButton() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm md:text-base text-gray-900 outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-2.5 bg-midnight rounded-xl border border-midnight-lighter text-sm md:text-base text-pearl outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all placeholder:text-gray-600"
           />
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+          <p className="text-sm text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
 
         {successMsg && (
-          <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+          <p className="text-sm text-green-400 bg-green-900/20 border border-green-900/50 rounded-lg px-3 py-2">
             {successMsg}
           </p>
         )}
@@ -107,11 +107,11 @@ export default function AuthButton() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-accent-600 hover:bg-accent-700 disabled:bg-accent-300 text-white font-medium py-3 rounded-xl transition-colors"
+          className="w-full bg-gold hover:bg-gold-light disabled:bg-midnight-lighter disabled:text-silver text-midnight font-medium py-3 rounded-xl transition-colors"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span className="w-4 h-4 border-2 border-midnight border-t-transparent border-l-transparent opacity-50 rounded-full animate-spin" />
               Yüklənir...
             </span>
           ) : mode === 'signin' ? 'Daxil ol' : 'Qeydiyyatdan keç'}

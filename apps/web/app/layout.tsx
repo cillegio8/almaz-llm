@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Open_Sans } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const openSans = Open_Sans({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-open-sans' })
 
 export const metadata: Metadata = {
   title: 'ALMAZ — Native Azerbaijani AI',
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="az" className={`${inter.variable}`}>
+    <html lang="az" className={`${inter.variable} ${openSans.variable}`}>
       <body className="min-h-screen">
         {children}
       </body>

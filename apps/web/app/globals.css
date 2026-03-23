@@ -17,6 +17,7 @@
   /* Typography Variables (from Next.js fonts) */
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
   --font-body: var(--font-dm-sans), 'DM Sans', -apple-system, sans-serif;
+  --font-sans: var(--font-open-sans), 'Open Sans', Arial, 'Proxima Nova', sans-serif;
 }
 
 * {

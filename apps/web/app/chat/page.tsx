@@ -122,7 +122,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA] font-body">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA]" style={{ fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
@@ -131,7 +131,7 @@ export default function ChatPage() {
               <path d="M12 2L2 8l2 1.5L12 22l8-12.5L22 8 12 2zm0 2.5l6.5 4-1.2.9L12 5.8l-5.3 3.6-1.2-.9L12 4.5zM6.2 10.3L12 8.2l5.8 2.1L12 19.5 6.2 10.3z"/>
             </svg>
           </div>
-          <span className="font-semibold text-gray-900 font-display text-2xl tracking-wide">ALMAZ</span>
+          <span className="font-semibold text-gray-900 text-2xl tracking-wide">ALMAZ</span>
         </div>
 
         <div className="flex items-center gap-4">

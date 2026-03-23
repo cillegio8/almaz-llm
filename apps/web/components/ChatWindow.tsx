@@ -46,8 +46,8 @@ export default function ChatWindow({ messages, sending }: ChatWindowProps) {
           </svg>
         </div>
         <div>
-          <p className="font-medium text-gray-900 font-display text-2xl tracking-wide">Salam! Sizə necə kömək edə bilərəm?</p>
-          <p className="text-sm text-gray-500 mt-2 font-body">Azərbaycan dilində sualınızı yazın</p>
+          <p className="font-medium text-gray-900 text-2xl tracking-wide">Salam! Sizə necə kömək edə bilərəm?</p>
+          <p className="text-sm text-gray-500 mt-2">Azərbaycan dilində sualınızı yazın</p>
         </div>
       </div>
     )
