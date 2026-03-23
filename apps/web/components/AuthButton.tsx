@@ -73,7 +73,7 @@ export default function AuthButton() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.com"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm md:text-base text-gray-900 outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
           />
         </div>
 
@@ -88,7 +88,7 @@ export default function AuthButton() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm md:text-base text-gray-900 outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
           />
         </div>
 
