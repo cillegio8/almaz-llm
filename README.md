@@ -2,6 +2,7 @@
 
 A full-stack Azerbaijani-language AI chatbot. Users register with email/password, receive 20 free questions per 8-hour window, and interact with an LLM constrained to respond only in Azerbaijani.
 
+
 ## Architecture
 
 ```
