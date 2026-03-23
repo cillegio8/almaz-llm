@@ -15,6 +15,9 @@ export default function LandingPage() {
     const supabase = createClient()
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
+        if (error.message.includes('Refresh Token Not Found')) {
+          supabase.auth.signOut().catch(() => {})
+        }
         console.error('Session check error:', error)
         setChecking(false)
         return
