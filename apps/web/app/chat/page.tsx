@@ -115,23 +115,23 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-accent-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-midnight">
+        <div className="w-8 h-8 border-4 border-gold border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-midnight font-body">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+      <header className="bg-midnight-light border-b border-midnight-lighter px-4 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <div className="w-8 h-8 bg-gold rounded-lg flex items-center justify-center">
+            <svg className="w-4 h-4 text-midnight" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L2 8l2 1.5L12 22l8-12.5L22 8 12 2zm0 2.5l6.5 4-1.2.9L12 5.8l-5.3 3.6-1.2-.9L12 4.5zM6.2 10.3L12 8.2l5.8 2.1L12 19.5 6.2 10.3z"/>
             </svg>
           </div>
-          <span className="font-semibold text-gray-900">ALMAZ</span>
+          <span className="font-semibold text-pearl font-display text-xl tracking-wide">ALMAZ</span>
         </div>
 
         <div className="flex items-center gap-4">
@@ -141,12 +141,12 @@ export default function ChatPage() {
               <img
                 src={user.user_metadata.avatar_url}
                 alt="Avatar"
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full border border-midnight-lighter"
               />
             )}
             <button
               onClick={handleSignOut}
-              className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-sm text-silver hover:text-gold transition-colors"
             >
               Çıxış
             </button>
@@ -162,7 +162,7 @@ export default function ChatPage() {
         <ChatWindow messages={messages} sending={sending} />
 
         {/* Input Area */}
-        <div className="mt-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-3 flex items-end gap-3">
+        <div className="mt-4 bg-midnight-light rounded-2xl border border-midnight-lighter shadow-sm p-3 flex items-end gap-3 transition-colors focus-within:border-gold/50">
           <textarea
             ref={inputRef}
             value={input}
@@ -170,17 +170,17 @@ export default function ChatPage() {
             onKeyDown={handleKeyDown}
             placeholder="Azərbaycan dilində yazın..."
             rows={1}
-            className="flex-1 resize-none outline-none text-gray-800 placeholder-gray-400 text-sm leading-6 max-h-32"
+            className="flex-1 bg-transparent resize-none outline-none text-pearl placeholder-silver text-sm leading-6 max-h-32"
             style={{ minHeight: '24px' }}
             disabled={sending}
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || sending}
-            className="w-9 h-9 bg-accent-600 hover:bg-accent-700 disabled:bg-gray-200 text-white rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+            className="w-9 h-9 bg-gold hover:bg-gold-light disabled:bg-midnight-lighter disabled:text-silver text-midnight rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
           >
             {sending ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-midnight border-t-transparent border-l-transparent opacity-50 rounded-full animate-spin" />
             ) : (
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -188,7 +188,7 @@ export default function ChatPage() {
             )}
           </button>
         </div>
-        <p className="text-xs text-gray-400 text-center mt-2">
+        <p className="text-xs text-silver text-center mt-2">
           Enter ilə göndərin · Shift+Enter ilə yeni sətir
         </p>
       </div>

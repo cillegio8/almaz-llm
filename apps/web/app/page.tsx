@@ -120,12 +120,9 @@ export default function LandingPage() {
             <li><a href="#applications" onClick={(e) => handleNavClick(e, 'applications')}>Tətbiqlər</a></li>
         </ul>
         <div className="flex items-center gap-4">
-            <a href="/chat" className="nav-links px-2 text-xs text-silver hover:text-gold uppercase tracking-widest transition-colors font-medium">Daxil ol / Log in</a>
-            <a href="/chat" className="nav-links px-2 text-xs text-silver hover:text-gold uppercase tracking-widest transition-colors font-medium">Qeydiyyat / Sign up</a>
-            <button className="nav-cta" onClick={(e) => {
-                const target = document.getElementById('auth-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            }}>Başla</button>
+            <a href="#auth-section" onClick={(e) => handleNavClick(e, 'auth-section')} className="nav-links px-2 text-xs text-silver hover:text-gold uppercase tracking-widest transition-colors font-medium">Daxil ol / Log in</a>
+            <a href="#auth-section" onClick={(e) => handleNavClick(e, 'auth-section')} className="nav-links px-2 text-xs text-silver hover:text-gold uppercase tracking-widest transition-colors font-medium">Qeydiyyat / Sign up</a>
+            <button className="nav-cta" onClick={(e) => handleNavClick(e, 'auth-section')}>Başla</button>
         </div>
       </nav>
 
@@ -145,7 +142,7 @@ export default function LandingPage() {
                 Yalnız Azərbaycan dilində anlama və nəsil üçün yaradılmış ilk peşəkar səviyyəli dil modeli.
             </p>
             <div className="hero-cta-group">
-                <a href="/chat" className="btn-primary">İndi Sına</a>
+                <a href="#auth-section" onClick={(e) => handleNavClick(e, 'auth-section')} className="btn-primary">İndi Sına</a>
                 <button className="btn-secondary" onClick={(e) => handleNavClick(e, 'about')}>Daha Ətraflı</button>
             </div>
         </div>

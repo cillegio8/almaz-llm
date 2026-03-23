@@ -1,15 +1,5 @@
 :root {
-    --gold: #C9A962;
-    --gold-light: #E8D5A3;
-    --gold-dark: #8B7355;
-    --midnight: #0A0B0D;
-    --charcoal: #141619;
-    --slate: #1E2024;
-    --silver: #A8AAB0;
-    --pearl: #F5F5F7;
-    --accent-teal: #4ECDC4;
-    --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
-    --font-body: var(--font-dm-sans), 'DM Sans', -apple-system, sans-serif;
+    /* Variables are now in globals.css */
 }
 
 * {

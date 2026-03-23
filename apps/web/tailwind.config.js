@@ -8,6 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        midnight: {
+          DEFAULT: 'var(--midnight)',
+          light: 'var(--midnight-light)',
+          lighter: 'var(--midnight-lighter)',
+        },
+        gold: {
+          DEFAULT: 'var(--gold)',
+          light: 'var(--gold-light)',
+          dark: 'var(--gold-dark)',
+        },
+        silver: 'var(--silver)',
+        pearl: 'var(--pearl)',
         accent: {
           50: '#f0f9ff',
           100: '#e0f2fe',
